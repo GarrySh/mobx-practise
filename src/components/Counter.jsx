@@ -1,25 +1,38 @@
 import React from 'react';
-import { observable } from 'mobx';
+import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 
 @observer
 class Counter extends React.Component {
-  @observable count = 0;
+  static propTypes = {
+    store: PropTypes.shape({
+      count: PropTypes.number.isRequired,
+      increment: PropTypes.func.isRequired,
+      decrement: PropTypes.func.isRequired,
+    }).isRequired,
+  };
 
   handleIncrement = () => {
-    this.count += 1;
+    const { store } = this.props;
+    store.increment();
   };
 
   handleDecrement = () => {
-    this.count -= 1;
+    const { store } = this.props;
+    store.decrement();
   };
 
   render() {
+    const { store } = this.props;
     return (
       <div className="Counter">
-        <h1>{this.count}</h1>
-        <button type="button" onClick={this.handleDecrement}>-1</button>
-        <button type="button" onClick={this.handleIncrement}>+1</button>
+        <h1>{store.count}</h1>
+        <button type="button" onClick={this.handleDecrement}>
+          -1
+        </button>
+        <button type="button" onClick={this.handleIncrement}>
+          +1
+        </button>
       </div>
     );
   }
