@@ -1,26 +1,34 @@
+import { observable, computed, action } from 'mobx';
+
 class Store {
-  devsList = [{ name: 'Jack', sp: 12 }, { name: 'Max', sp: 10 }, { name: 'Garry', sp: 8 }];
+  @observable devsList = [
+    { name: 'Jack', sp: 12 },
+    { name: 'Max', sp: 10 },
+    { name: 'Garry', sp: 8 },
+  ];
 
+  @computed
   get totalSum() {
-    console.log(this);
-
-    return 0;
+    return this.devsList.reduce((acc, { sp }) => sp + acc, 0)
   }
 
+  @computed
   get topPerformer() {
-    console.log(this);
-
+    const maxSp = Math.max(...this.devsList.map(item => item.sp));
+    const topDev= this.devsList.find(item => item.sp === maxSp)
     return {
-      name: 'Name',
+      name: topDev.name,
     };
   }
 
+  @action
   clearList() {
-    console.log(this);
+    this.devsList = [];
   }
 
-  addDeveloper() {
-    console.log(this);
+  @action
+  addDeveloper(dev) {
+    this.devsList.push(dev);
   }
 }
 
