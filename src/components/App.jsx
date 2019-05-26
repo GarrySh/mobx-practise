@@ -1,55 +1,18 @@
 import React from 'react';
 import DevTools from 'mobx-react-devtools';
-import { observable, computed, configure, action } from 'mobx';
-import './App.css';
-import Counter from './Counter';
-import UserNickName from './UserNickName';
-
-configure({ enforceActions: 'observed' });
-
-const counterState = observable(
-  {
-    count: 0,
-    increment() {
-      this.count += 1;
-    },
-    decrement() {
-      this.count -= 1;
-    },
-  },
-  {
-    increment: action('Plus one'),
-    decrement: action('Minus one'),
-  }, {
-    name: 'nickNameObservableObject'
-  }
-);
-
-const nickName = new (class {
-  @observable firstName = 'Garry';
-
-  @observable age = 30;
-
-  @computed get nickName() {
-    return `${this.firstName}${this.age}`;
-  }
-
-  increment() {
-    this.age += 1;
-  }
-
-  decrement() {
-    this.age -= 1;
-  }
-})();
+import Controls from './Controls';
+import Table from './Table';
+import Store from './Store';
 
 const App = () => {
+  const appStore = new Store();
+
   return (
-    <div className="App">
+    <div>
       <DevTools />
-      <h1>Hello world!</h1>
-      <Counter store={counterState} />
-      <UserNickName store={nickName} />
+      <h1>Sprint Board:</h1>
+      <Controls store={appStore} />
+      <Table store={appStore} />
     </div>
   );
 };
